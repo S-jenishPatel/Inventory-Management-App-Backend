@@ -76,7 +76,7 @@ const login = async (req, res) => {
 
   const existingUser = await User.findOne({ $or: [{ username }, { email }] });
   if (!existingUser) {
-    res.status(404).send("Username entered is incorrect");
+    res.status(404).send("Username/Email entered is incorrect");
   }
 
   const isPasswordCorrect = await existingUser.checkPassword(password);
