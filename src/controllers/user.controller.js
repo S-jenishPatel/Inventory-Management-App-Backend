@@ -70,7 +70,7 @@ const signup = async (req, res) => {
 const login = async (req, res) => {
   const { username, email, password } = req.body;
 
-  if (!(username && email) || !password) {
+  if (!(username || email) || !password) {
     res.status(400).send("Username/Email and Password are required");
   }
 
