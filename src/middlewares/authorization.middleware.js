@@ -7,7 +7,7 @@ const verifyJWT = async (req, res, next) => {
     req.header("Authorization")?.replace("Bearer ", "");
 
   if (!token) {
-    res.status(401).send("Unauthorized request");
+    return res.status(401).send("Unauthorized request");
   }
 
   const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
@@ -17,7 +17,7 @@ const verifyJWT = async (req, res, next) => {
   );
 
   if (!user) {
-    res.status(401).send("Invalid Access Token");
+    return res.status(401).send("Invalid Access Token");
   }
 
   req.user = user;

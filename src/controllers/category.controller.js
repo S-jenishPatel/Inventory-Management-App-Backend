@@ -13,12 +13,12 @@ const getAllCategories = async (req, res) => {
 const getCategoryById = async (req, res) => {
   const id = req.params.id;
   if (!id) {
-    res.status(400).send("Category id is required");
+    return res.status(400).send("Category id is required");
   }
 
   const category = await Category.findById(id);
   if (!category) {
-    res.status(404).send("Category id is incorrect");
+    return res.status(404).send("Category id is incorrect");
   }
 
   return res
@@ -29,12 +29,12 @@ const getCategoryById = async (req, res) => {
 const addCategory = async (req, res) => {
   const { name } = req.body;
   if (!name) {
-    res.status(400).send("name is required");
+    return res.status(400).send("name is required");
   }
 
   const existingCategory = await Category.findOne({ name });
   if (existingCategory) {
-    res.status(409).send("Category already exists");
+    return res.status(409).send("Category already exists");
   }
 
   const newCategory = await Category.create({
@@ -42,7 +42,9 @@ const addCategory = async (req, res) => {
     user: req.user._id,
   });
   if (!newCategory) {
-    res.status(500).send("Failed to create the category in the database");
+    return res
+      .status(500)
+      .send("Failed to create the category in the database");
   }
 
   return res
@@ -55,16 +57,16 @@ const updateCategory = async (req, res) => {
   const { name } = req.body;
 
   if (!id) {
-    res.status(400).send("Category id is required");
+    return res.status(400).send("Category id is required");
   }
 
   if (!name) {
-    res.status(400).send("All Fields are required");
+    return res.status(400).send("All Fields are required");
   }
 
   const existingCategory = await Category.findOne({ name });
   if (existingCategory) {
-    res.status(409).send("Category already exists");
+    return res.status(409).send("Category already exists");
   }
 
   const category = await Category.findByIdAndUpdate(

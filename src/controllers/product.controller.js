@@ -8,7 +8,7 @@ const {
 const getProductById = async (req, res) => {
   const id = req.params.id; //id as string
   if (!id) {
-    res.status(400).send("Product id is required");
+    return res.status(400).send("Product id is required");
   }
 
   const products = await Product.aggregate([
@@ -84,12 +84,12 @@ const addProduct = async (req, res) => {
   const { name, price, quantity, category, description } = req.body;
 
   if (!name) {
-    res.status(400).send("Name is required");
+    return res.status(400).send("Name is required");
   }
 
   const existingProduct = await Product.findOne({ name });
   if (existingProduct) {
-    res.status(409).send("Product already exists");
+    return res.status(409).send("Product already exists");
   }
 
   var existingCategory = await Category.findOne({
@@ -117,7 +117,7 @@ const addProduct = async (req, res) => {
   });
 
   if (!newProduct) {
-    res.status(500).send("Failed to add the product in the database");
+    return res.status(500).send("Failed to add the product in the database");
   }
 
   return res
@@ -130,11 +130,11 @@ const updateProduct = async (req, res) => {
   const { name, price, quantity, category, description } = req.body;
 
   if (!id) {
-    res.status(400).send("Product id is required");
+    return res.status(400).send("Product id is required");
   }
 
   if (!name || !price || !quantity || !category || !description) {
-    res.status(400).send("All fields are required");
+    return res.status(400).send("All fields are required");
   }
 
   if (category) {
@@ -161,7 +161,7 @@ const updateProduct = async (req, res) => {
     { new: true }
   );
   if (!product) {
-    res.status(404).send("Product id is incorrect");
+    return res.status(404).send("Product id is incorrect");
   }
 
   return res
@@ -172,13 +172,13 @@ const updateProduct = async (req, res) => {
 const updateProductImage = async (req, res) => {
   const id = req.params.id;
   if (!id) {
-    res.status(400).send("Product id is required");
+    return res.status(400).send("Product id is required");
   }
 
   const imagePath = req.file?.path;
 
   if (!imagePath) {
-    res.status(400).send("Image is required");
+    return res.status(400).send("Image is required");
   }
 
   const imageObject = await uploadOnCloudinary(imagePath);
@@ -206,7 +206,7 @@ const updateProductImage = async (req, res) => {
     { new: true }
   );
   if (!product) {
-    res.status(404).send("Product id is incorrect");
+    return res.status(404).send("Product id is incorrect");
   }
 
   return res
@@ -217,12 +217,12 @@ const updateProductImage = async (req, res) => {
 const deleteProduct = async (req, res) => {
   const id = req.params.id;
   if (!id) {
-    res.status(400).send("Product id is required");
+    return res.status(400).send("Product id is required");
   }
 
   const product = await Product.findByIdAndDelete(id);
   if (!product) {
-    res.status(404).send("Product id is incorrect");
+    return res.status(404).send("Product id is incorrect");
   }
 
   return res

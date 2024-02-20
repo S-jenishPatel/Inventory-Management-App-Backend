@@ -16,7 +16,7 @@ const generateAccessAndRefreshTokens = async (id, res) => {
 
     return { accessToken, refreshToken };
   } catch (error) {
-    res
+    return res
       .status(500)
       .send("Error while generating access token and refresh token");
   }
@@ -26,13 +26,13 @@ const signup = async (req, res) => {
   const { username, password, email, phoneNumber } = req.body;
 
   if (!username || !email || !password) {
-    res.status(400).send("All Fields are required");
+    return res.status(400).send("All Fields are required");
   }
 
   const ExistingUser = await User.findOne({ $or: [{ username }, { email }] });
 
   if (ExistingUser) {
-    res.status(409).send("Username or Email already exists");
+    return res.status(409).send("Username or Email already exists");
   }
 
   const userImage = req.file?.path;
@@ -59,7 +59,7 @@ const signup = async (req, res) => {
   );
 
   if (!createdUser) {
-    res.status(500).send("Failed to register the user in the database");
+    return res.status(500).send("Failed to register the user in the database");
   }
 
   return res
@@ -71,17 +71,17 @@ const login = async (req, res) => {
   const { username, email, password } = req.body;
 
   if (!(username || email) || !password) {
-    res.status(400).send("Username/Email and Password are required");
+    return res.status(400).send("Username/Email and Password are required");
   }
 
   const existingUser = await User.findOne({ $or: [{ username }, { email }] });
   if (!existingUser) {
-    res.status(404).send("Username/Email entered is incorrect");
+    return res.status(404).send("Username/Email entered is incorrect");
   }
 
   const isPasswordCorrect = await existingUser.checkPassword(password);
   if (!isPasswordCorrect) {
-    res.status(401).send("Password entered is incorrect");
+    return res.status(401).send("Password entered is incorrect");
   }
 
   const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
@@ -135,7 +135,7 @@ const regenerateTokens = async (req, res) => {
     req.cookies?.refreshToken || req.body.refreshToken;
 
   if (!incomingRefreshToken) {
-    res.status(401).send("Unauthorized request");
+    return res.status(401).send("Unauthorized request");
   }
 
   const decodedToken = await jwt.verify(
@@ -145,11 +145,11 @@ const regenerateTokens = async (req, res) => {
 
   const user = await User.findById(decodedToken._id);
   if (!user) {
-    res.status(401).send("Invalid Refresh Token");
+    return res.status(401).send("Invalid Refresh Token");
   }
 
   if (incomingRefreshToken !== user?.refreshToken) {
-    res.status(401).send("Refresh Token Expired");
+    return res.status(401).send("Refresh Token Expired");
   }
 
   const { accessToken, newRefreshToken } = await generateAccessAndRefreshTokens(
@@ -175,7 +175,7 @@ const changeCurrentPassword = async (req, res) => {
   const isPasswordCorrect = await user.checkPassword(oldPassword);
 
   if (!isPasswordCorrect) {
-    res.status(400).send("Incorrect Password");
+    return res.status(400).send("Incorrect Password");
   }
 
   user.password = newPassword;
@@ -194,7 +194,7 @@ const updateUser = async (req, res) => {
   const { email, phoneNumber } = req.body;
 
   if (!email && !phoneNumber) {
-    res.status(400).send("No field to update");
+    return res.status(400).send("No field to update");
   }
 
   const user = await User.findByIdAndUpdate(
@@ -217,7 +217,7 @@ const updateUserImage = async (req, res) => {
   const imagePath = req.file?.path;
 
   if (!imagePath) {
-    res.status(400).send("Image is required");
+    return res.status(400).send("Image is required");
   }
 
   const imageObject = await uploadOnCloudinary(imagePath);
