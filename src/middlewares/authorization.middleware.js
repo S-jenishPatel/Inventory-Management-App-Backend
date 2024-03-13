@@ -2,6 +2,9 @@ const User = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 
 const verifyJWT = async (req, res, next) => {
+  res.header("Access-Control-Allow-Origin", process.env.CORS_ORIGIN);
+  res.header("Access-Control-Allow-Credentials", true);
+
   const token =
     req.cookies?.accessToken ||
     req.header("Authorization")?.replace("Bearer ", "");
