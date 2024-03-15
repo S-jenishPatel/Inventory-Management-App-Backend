@@ -96,7 +96,7 @@ const login = async (req, res) => {
   const options = {
     httpOnly: true,
     sameSite: "none",
-    // secure: true,
+    secure: true,
   };
 
   return res
@@ -122,7 +122,7 @@ const logout = async (req, res) => {
   const options = {
     httpOnly: true,
     sameSite: "none",
-    // secure: true,
+    secure: true,
   };
 
   return res
@@ -161,7 +161,7 @@ const regenerateTokens = async (req, res) => {
   const options = {
     httpOnly: true,
     sameSite: "none",
-    // secure: true,
+    secure: true,
   };
 
   return res
