@@ -20,7 +20,7 @@ var corsOptions = {
   credentials: true,
 };
 
-app.use(corsOptions);
+app.use(cors(corsOptions));
 
 // cors({
 //   origin: process.env.CORS_ORIGIN,
