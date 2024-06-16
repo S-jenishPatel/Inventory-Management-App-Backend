@@ -1,7 +1,7 @@
 {
-  "name": "inventory-management-app",
+  "name": "stockflow",
   "version": "1.0.0",
-  "description": "An Inventory management web-app for college project",
+  "description": "An Inventory management web-app",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
