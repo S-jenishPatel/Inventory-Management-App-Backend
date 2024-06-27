@@ -1,7 +1,7 @@
 
 # Inventory Management App Backend
 
-This is the backend for a full-stack project I am working on which is Inventory Management App.
+This is the backend for Stockflow - a full-stack Inventory Management App.
 
 
 ## Tech Stack
