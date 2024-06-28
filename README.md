@@ -19,6 +19,19 @@ This is the backend for Stockflow - a full-stack Inventory Management Applicatio
 - Authentication and Authorization using jsonwebtokens and cookies
 - Images received and stored via multer and coudinary
 
+## Roadmap
+
+- Planning the project
+
+- Build RESTfull backend (check out backend repo)
+
+- Test Api's using Postman
+
+- Deploy Backend
+
+- Build Frontend
+
+- Deploy Frontend
 
 ## Lessons Learned
 
